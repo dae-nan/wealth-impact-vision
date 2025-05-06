@@ -97,7 +97,8 @@ export const parsePortfolioCsv = (input: File | string, fileName?: string): Prom
           reject(new Error('Failed to parse CSV data. Please check the file format.'));
         }
       },
-      error: (error: Error) => {
+      // Fix for TypeScript error - properly type the error parameter
+      error: (error) => {
         reject(new Error(`CSV parsing error: ${error.message}`));
       }
     };
@@ -106,6 +107,7 @@ export const parsePortfolioCsv = (input: File | string, fileName?: string): Prom
     if (typeof input === 'string') {
       Papa.parse(input, parseConfig);
     } else if (input instanceof File) {
+      // Use different Papa.parse overload for File input
       Papa.parse(input, parseConfig);
     }
   });
