@@ -79,12 +79,12 @@ export const parsePortfolioCsv = async (
   customName?: string
 ): Promise<HoldingsData> => {
   return new Promise((resolve, reject) => {
-    const parseConfig: Papa.ParseConfig<CSVRow> = {
+    const parseConfig = {
       header: true,
       skipEmptyLines: true,
       transform: (value: string) => value.trim(),
       dynamicTyping: false, // Keep as string for now
-      complete: (results) => {
+      complete: (results: Papa.ParseResult<CSVRow>) => {
         try {
           if (results.errors && results.errors.length > 0) {
             reject(new Error(`CSV parsing error: ${results.errors[0].message}`));
@@ -156,7 +156,8 @@ export const parsePortfolioCsv = async (
     if (typeof fileOrContent === 'string') {
       Papa.parse(fileOrContent, parseConfig);
     } else {
-      Papa.parse(fileOrContent, parseConfig);
+      // For File objects, we need to use the correct overload
+      Papa.parse(fileOrContent as File, parseConfig);
     }
   });
 };
