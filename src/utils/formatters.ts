@@ -1,22 +1,14 @@
 
 /**
  * Format currency values in a more readable way
- * For large numbers, display in millions with $M suffix
+ * Always display in compact notation (millions with $M or billions with $B suffix)
  */
 export const formatCurrencyCompact = (value: number): string => {
-  if (Math.abs(value) >= 1000000) {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }).format(value);
-  }
-  
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    maximumFractionDigits: 0,
+    notation: 'compact',
+    maximumFractionDigits: 1,
   }).format(value);
 };
 
