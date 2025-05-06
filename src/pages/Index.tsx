@@ -17,7 +17,8 @@ const Index = () => {
             <div className="text-center space-y-2">
               <h1 className="text-3xl font-bold">Portfolio Holdings Visualizer</h1>
               <p className="text-muted-foreground">
-                Upload a CSV file with portfolio holdings to visualize asset allocation and exposure.
+                Upload a CSV file with portfolio holdings to visualize asset allocation and exposure, 
+                or select one of the pre-canned portfolios below (Warren Buffett, Li Ka Shing, etc.).
               </p>
               <div className="flex justify-center mt-2">
                 <SampleDataButton />

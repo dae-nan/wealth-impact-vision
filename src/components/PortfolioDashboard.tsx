@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePortfolioStore } from '@/store/portfolioStore';
@@ -59,6 +58,7 @@ export const PortfolioDashboard = () => {
           <TabsTrigger value="industry" className="px-4">Industries</TabsTrigger>
           <TabsTrigger value="geography" className="px-4">Geography</TabsTrigger>
           <TabsTrigger value="scenarios" className="px-4">Scenario Analysis</TabsTrigger>
+          <TabsTrigger value="vulnerability" className="px-4">Vulnerability</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
@@ -253,7 +253,6 @@ export const PortfolioDashboard = () => {
             <>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                 <RiskAttributionAnalysis />
-                <VulnerabilityComparison />
               </div>
               
               <div className="flex justify-end mt-4">
@@ -261,6 +260,28 @@ export const PortfolioDashboard = () => {
               </div>
             </>
           )}
+        </TabsContent>
+        
+        <TabsContent value="vulnerability" className="space-y-6">
+          <div className="grid grid-cols-1 gap-6">
+            {selectedScenarioId ? (
+              <VulnerabilityComparison />
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Vulnerability Comparison</CardTitle>
+                  <CardDescription>
+                    Select a scenario first to compare portfolio vulnerabilities
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-center py-8 text-muted-foreground">
+                    Please select a scenario from the Scenario Analysis tab to view vulnerability comparisons
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </TabsContent>
       </Tabs>
     </div>
