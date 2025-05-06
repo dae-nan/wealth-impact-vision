@@ -5,33 +5,40 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
+    /* Standard Chartered color palette */
+    --background: 0 0% 100%;
+    --foreground: 220 12% 18%;
 
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
+    /* Primary blue from SC */
+    --primary: 214 65% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
+    /* Secondary colors */
+    --secondary: 220 13% 91%;
+    --secondary-foreground: 220 12% 18%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* UI elements */
+    --card: 0 0% 100%;
+    --card-foreground: 220 12% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 12% 18%;
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 214 65% 40%;
+    --accent-foreground: 0 0% 100%;
+    --border: 220 13% 80%;
+    --input: 220 13% 80%;
+    --ring: 214 65% 40%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
+    /* Feedback states */
+    --destructive: 0 85% 44%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 143 64% 40%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 87% 50%;
+    --warning-foreground: 0 0% 0%;
+    --info: 214 100% 50%;
+    --info-foreground: 0 0% 100%;
   }
 }
 
@@ -40,8 +47,70 @@
     @apply border-border;
   }
 
+  html {
+    font-family: 'Public Sans', sans-serif;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl;
+  }
+}
+
+@layer components {
+  /* Standard Chartered button styles */
+  .sc-button-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 rounded;
+  }
+
+  .sc-button-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 rounded;
+  }
+
+  .sc-button-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded;
+  }
+
+  /* Standard Chartered card styles */
+  .sc-card {
+    @apply bg-card text-card-foreground shadow-sm border rounded-md;
+  }
+
+  /* Standard Chartered table styles */
+  .sc-table {
+    @apply w-full border-separate border-spacing-0;
+  }
+
+  .sc-table th {
+    @apply bg-secondary text-secondary-foreground font-medium text-left p-3 border-b;
+  }
+
+  .sc-table td {
+    @apply p-3 border-b border-border;
+  }
+
+  /* Standard Chartered form styles */
+  .sc-input {
+    @apply flex h-10 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
   }
 }

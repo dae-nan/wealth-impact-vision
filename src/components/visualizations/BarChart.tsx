@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { generateChartColors } from '@/utils/csvParser';
+import { getScChartColors } from '@/utils/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface BarChartProps {
@@ -46,7 +46,7 @@ export const BarChart = ({ data, title, height = 300 }: BarChartProps) => {
     const entries = Object.entries(data);
     entries.sort((a, b) => b[1] - a[1]); // Sort by value in descending order
     
-    const colors = generateChartColors(entries.length);
+    const colors = getScChartColors(entries.length);
 
     // Create the group element with margin transformation
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
@@ -122,7 +122,7 @@ export const BarChart = ({ data, title, height = 300 }: BarChartProps) => {
     yAxisLine.setAttribute('y1', '0');
     yAxisLine.setAttribute('x2', '0');
     yAxisLine.setAttribute('y2', innerHeight.toString());
-    yAxisLine.setAttribute('stroke', 'currentColor');
+    yAxisLine.setAttribute('stroke', '#9CA3AF'); // SC neutral color
     yAxisLine.setAttribute('stroke-width', '1');
     yAxis.appendChild(yAxisLine);
     
@@ -138,7 +138,7 @@ export const BarChart = ({ data, title, height = 300 }: BarChartProps) => {
       tick.setAttribute('y1', y.toString());
       tick.setAttribute('x2', '0');
       tick.setAttribute('y2', y.toString());
-      tick.setAttribute('stroke', 'currentColor');
+      tick.setAttribute('stroke', '#9CA3AF'); // SC neutral color
       tick.setAttribute('stroke-width', '1');
       yAxis.appendChild(tick);
       
@@ -149,7 +149,7 @@ export const BarChart = ({ data, title, height = 300 }: BarChartProps) => {
       label.setAttribute('text-anchor', 'end');
       label.setAttribute('dominant-baseline', 'middle');
       label.setAttribute('font-size', '10');
-      label.setAttribute('fill', 'currentColor');
+      label.setAttribute('fill', '#374151'); // SC neutral dark
       
       // Format label based on value size
       let formattedValue;
@@ -175,7 +175,7 @@ export const BarChart = ({ data, title, height = 300 }: BarChartProps) => {
     xAxis.setAttribute('y1', innerHeight.toString());
     xAxis.setAttribute('x2', innerWidth.toString());
     xAxis.setAttribute('y2', innerHeight.toString());
-    xAxis.setAttribute('stroke', 'currentColor');
+    xAxis.setAttribute('stroke', '#9CA3AF'); // SC neutral color
     xAxis.setAttribute('stroke-width', '1');
     g.appendChild(xAxis);
 
@@ -196,13 +196,13 @@ export const BarChart = ({ data, title, height = 300 }: BarChartProps) => {
           />
           {tooltipData.visible && (
             <div 
-              className="absolute pointer-events-none bg-popover text-popover-foreground shadow-md p-2 rounded text-sm z-50"
+              className="absolute pointer-events-none bg-white border border-sc-neutral-200 shadow-lg p-2 rounded text-sm z-50"
               style={{ 
                 left: `${tooltipData.x + 10}px`, 
                 top: `${tooltipData.y - 30}px`
               }}
             >
-              <div className="font-semibold">{tooltipData.label}</div>
+              <div className="font-semibold text-sc-blue">{tooltipData.label}</div>
               <div>Value: {tooltipData.value.toLocaleString()}</div>
             </div>
           )}

@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
-import { generateChartColors } from '@/utils/csvParser';
+import { getScChartColors } from '@/utils/formatters';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface PieChartProps {
@@ -48,7 +48,7 @@ export const PieChart = ({ data, title, height = 300 }: PieChartProps) => {
     // Prepare data
     const entries = Object.entries(data);
     const total = entries.reduce((sum, [_, value]) => sum + value, 0);
-    const colors = generateChartColors(entries.length);
+    const colors = getScChartColors(entries.length);
 
     // Sort entries by value (descending)
     entries.sort((a, b) => b[1] - a[1]);
@@ -92,7 +92,7 @@ export const PieChart = ({ data, title, height = 300 }: PieChartProps) => {
       
       arc.setAttribute('d', pathData);
       arc.setAttribute('fill', slice.color);
-      arc.setAttribute('stroke', 'rgba(255, 255, 255, 0.1)');
+      arc.setAttribute('stroke', 'white');
       arc.setAttribute('stroke-width', '1');
       
       // Add event listeners for interactivity
@@ -138,7 +138,7 @@ export const PieChart = ({ data, title, height = 300 }: PieChartProps) => {
       text.setAttribute('x', '15');
       text.setAttribute('y', '9');
       text.setAttribute('font-size', '10');
-      text.setAttribute('fill', 'currentColor');
+      text.setAttribute('fill', '#374151'); // SC neutral dark
       text.textContent = `${slice.key} (${(slice.percentage * 100).toFixed(1)}%)`;
       legendItem.appendChild(text);
 
@@ -164,14 +164,14 @@ export const PieChart = ({ data, title, height = 300 }: PieChartProps) => {
           />
           {tooltipData.visible && (
             <div 
-              className="absolute pointer-events-none bg-popover text-popover-foreground shadow-md p-2 rounded text-sm z-50"
+              className="absolute pointer-events-none bg-white border border-sc-neutral-200 shadow-lg p-2 rounded text-sm z-50"
               style={{ 
                 left: `${tooltipData.x + 10}px`, 
                 top: `${tooltipData.y + 10}px`,
                 transform: 'translate(0, -50%)'
               }}
             >
-              <div className="font-semibold">{tooltipData.label}</div>
+              <div className="font-semibold text-sc-blue">{tooltipData.label}</div>
               <div>Value: {tooltipData.value.toLocaleString()}</div>
               <div>{tooltipData.percent}</div>
             </div>

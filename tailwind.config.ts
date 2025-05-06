@@ -53,6 +53,43 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// SC brand specific colors
+				'sc-blue': {
+					DEFAULT: '#0F5EAD',
+					50: '#E9F2FB',
+					100: '#C1D9F4',
+					200: '#9BC2ED',
+					300: '#74AAE6',
+					400: '#4E93DF',
+					500: '#2B7CD8',
+					600: '#1F62AD',
+					700: '#145286',
+					800: '#0A3C61',
+					900: '#05273D',
+				},
+				'sc-green': {
+					DEFAULT: '#1E8539',
+					light: '#65B06C',
+				},
+				'sc-red': {
+					DEFAULT: '#CE1126',
+					light: '#E35F6D',
+				},
+				'sc-neutral': {
+					50: '#F9FAFB',
+					100: '#F3F4F6',
+					200: '#E5E7EB',
+					300: '#D1D5DB',
+					400: '#9CA3AF',
+					500: '#6B7280',
+					600: '#4B5563',
+					700: '#374151',
+					800: '#1F2937',
+					900: '#111827',
+				}
+			},
+			fontFamily: {
+				sans: ['Public Sans', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
