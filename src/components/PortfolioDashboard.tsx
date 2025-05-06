@@ -8,6 +8,8 @@ import { groupAssetsByProperty } from '@/utils/csvParser';
 import { Button } from './ui/button';
 import { ScenarioSelector } from './ScenarioSelector';
 import { PortfolioImpactDisplay } from './PortfolioImpactDisplay';
+import { RiskAttributionAnalysis } from './RiskAttributionAnalysis';
+import { VulnerabilityComparison } from './VulnerabilityComparison';
 
 export const PortfolioDashboard = () => {
   const { holdingsData, clearHoldingsData, selectedScenarioId } = usePortfolioStore();
@@ -155,6 +157,13 @@ export const PortfolioDashboard = () => {
             <ScenarioSelector />
             {selectedScenarioId && <PortfolioImpactDisplay />}
           </div>
+          
+          {selectedScenarioId && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+              <RiskAttributionAnalysis />
+              <VulnerabilityComparison />
+            </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>

@@ -1,4 +1,3 @@
-
 import { create } from 'zustand';
 
 export type AssetClass = 
@@ -73,6 +72,17 @@ export interface PortfolioImpact {
     absoluteChange: number; 
     percentageChange: number; 
   }>;
+  assetImpacts: {
+    id: string;
+    name: string;
+    originalValue: number;
+    impactedValue: number;
+    absoluteChange: number;
+    percentageChange: number;
+    assetClass: AssetClass;
+    industry: Industry;
+  }[];
+  vulnerabilityScore: number;
 }
 
 interface PortfolioState {
@@ -242,6 +252,30 @@ export const usePortfolioStore = create<PortfolioState>((set, get) => ({
       }
     });
     
+    // Calculate individual asset impacts
+    const assetImpacts = holdingsData.assets.map(asset => {
+      const impactPercentage = scenario.impacts.find(
+        impact => impact.assetClass === asset.assetClass
+      )?.percentageChange || 0;
+      
+      const absoluteChange = (asset.value * impactPercentage) / 100;
+      const impactedValue = asset.value + absoluteChange;
+      
+      return {
+        id: asset.id,
+        name: asset.name,
+        originalValue: asset.value,
+        impactedValue,
+        absoluteChange,
+        percentageChange: impactPercentage,
+        assetClass: asset.assetClass,
+        industry: asset.industry
+      };
+    });
+    
+    // Sort assets by absolute impact (from most negative to most positive)
+    assetImpacts.sort((a, b) => a.absoluteChange - b.absoluteChange);
+    
     // Calculate total portfolio impact
     const originalValue = holdingsData.totalValue;
     let impactedValue = 0;
@@ -253,13 +287,23 @@ export const usePortfolioStore = create<PortfolioState>((set, get) => ({
     const absoluteChange = impactedValue - originalValue;
     const percentageChange = (absoluteChange / originalValue) * 100;
     
+    // Calculate a vulnerability score - higher is more vulnerable
+    // Based on: volatility (magnitude of change regardless of direction) and downside risk
+    const volatility = Math.abs(percentageChange);
+    const downsideExposure = assetImpacts.filter(a => a.absoluteChange < 0)
+      .reduce((sum, asset) => sum + Math.abs(asset.absoluteChange), 0) / originalValue * 100;
+    
+    const vulnerabilityScore = (volatility * 0.4) + (downsideExposure * 0.6);
+    
     set({
       portfolioImpact: {
         originalValue,
         impactedValue,
         absoluteChange,
         percentageChange,
-        assetClassImpacts
+        assetClassImpacts,
+        assetImpacts,
+        vulnerabilityScore: Number(vulnerabilityScore.toFixed(2))
       }
     });
   }
