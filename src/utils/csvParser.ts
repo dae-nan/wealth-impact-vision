@@ -39,10 +39,10 @@ const validateAssetValues = (results: Papa.ParseResult<any>): string | null => {
   return null;
 };
 
-// Parse CSV data to HoldingsData format
-export const parsePortfolioCsv = (file: File): Promise<HoldingsData> => {
+// Parse CSV data to HoldingsData format - accepts either File or string content
+export const parsePortfolioCsv = (input: File | string, fileName?: string): Promise<HoldingsData> => {
   return new Promise((resolve, reject) => {
-    Papa.parse(file, {
+    const parseConfig: Papa.ParseConfig = {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
@@ -62,7 +62,15 @@ export const parsePortfolioCsv = (file: File): Promise<HoldingsData> => {
 
         try {
           // Extract individual name from filename (remove extension)
-          const individualName = file.name.replace(/\.[^/.]+$/, "");
+          let individualName: string;
+          
+          if (typeof input === 'string' && fileName) {
+            individualName = fileName;
+          } else if (input instanceof File) {
+            individualName = input.name.replace(/\.[^/.]+$/, "");
+          } else {
+            individualName = "Portfolio";
+          }
           
           // Parse assets
           const assets: Asset[] = results.data.map((row: any, index) => ({
@@ -92,7 +100,14 @@ export const parsePortfolioCsv = (file: File): Promise<HoldingsData> => {
       error: (error) => {
         reject(new Error(`CSV parsing error: ${error.message}`));
       }
-    });
+    };
+    
+    // Parse either a file or a string
+    if (typeof input === 'string') {
+      Papa.parse(input, parseConfig);
+    } else {
+      Papa.parse(input, parseConfig);
+    }
   });
 };
 

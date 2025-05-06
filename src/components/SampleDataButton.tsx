@@ -1,10 +1,12 @@
 
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/sonner';
-import { Download } from 'lucide-react';
+import { Import } from 'lucide-react';
+import { usePortfolioStore } from '@/store/portfolioStore';
+import { parsePortfolioCsv } from '@/utils/csvParser';
 
 // Warren Buffett's portfolio
-const WARREN_BUFFETT_CSV = `name,value,assetClass,Stocks,region,ticker,currency
+const WARREN_BUFFETT_CSV = `name,value,assetClass,industry,region,ticker,currency
 Apple,115000000000,Stocks,Technology,North America,AAPL,USD
 Bank of America,35000000000,Stocks,Finance,North America,BAC,USD
 Coca-Cola,21000000000,Stocks,Consumer Goods,North America,KO,USD
@@ -46,7 +48,7 @@ Real Estate Portfolio,15000000000,Real Estate,Real Estate,North America,,USD
 Farmland Investments,10000000000,Commodities,Other,North America,,USD
 Cash and Equivalents,5000000000,Cash,Finance,Global,,USD`;
 
-// Elon Musk's portfolio (using the existing sample data)
+// Elon Musk's portfolio
 const ELON_MUSK_CSV = `name,value,assetClass,industry,region,ticker,currency
 Tesla,120000000000,Stocks,Technology,North America,TSLA,USD
 SpaceX,50000000000,Private Equity,Technology,North America,,USD
@@ -60,24 +62,23 @@ Cash and Equivalents,5000000000,Cash,Finance,Global,,USD
 Artwork Collection,1000000000,Other,Other,Global,,USD
 Solar City,4000000000,Stocks,Energy,North America,,USD`;
 
-// Downloads sample data for the specified individual
-const downloadSampleData = (csvContent: string, fileName: string) => {
-  // Create blob from sample data
-  const blob = new Blob([csvContent], { type: 'text/csv' });
-  const url = URL.createObjectURL(blob);
-  
-  // Create temporary link and trigger download
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `${fileName}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  
-  // Clean up
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  
-  toast.success(`Sample data for ${fileName} downloaded successfully!`);
+// Function to load sample data directly into the app
+const loadSampleData = async (csvContent: string, individualName: string) => {
+  try {
+    const holdingsData = await parsePortfolioCsv(csvContent, individualName);
+    const { setHoldingsData, setLoading, setError } = usePortfolioStore.getState();
+    
+    setLoading(true);
+    setHoldingsData(holdingsData);
+    setLoading(false);
+    
+    toast.success(`Loaded ${individualName}'s portfolio successfully!`);
+  } catch (error) {
+    const { setError, setLoading } = usePortfolioStore.getState();
+    setLoading(false);
+    setError((error as Error).message);
+    toast.error(`Error loading sample data: ${(error as Error).message}`);
+  }
 };
 
 export const SampleDataButton = () => {
@@ -85,41 +86,41 @@ export const SampleDataButton = () => {
     <div className="flex flex-wrap gap-2 justify-center">
       <Button 
         variant="outline" 
-        onClick={() => downloadSampleData(WARREN_BUFFETT_CSV, 'Warren Buffett')}
+        onClick={() => loadSampleData(WARREN_BUFFETT_CSV, 'Warren Buffett')}
         className="text-xs"
         size="sm"
       >
-        <Download className="mr-1 h-3 w-3" />
+        <Import className="mr-1 h-3 w-3" />
         Warren Buffett
       </Button>
       
       <Button 
         variant="outline" 
-        onClick={() => downloadSampleData(LI_KA_SHING_CSV, 'Li Ka Shing')}
+        onClick={() => loadSampleData(LI_KA_SHING_CSV, 'Li Ka Shing')}
         className="text-xs"
         size="sm"
       >
-        <Download className="mr-1 h-3 w-3" />
+        <Import className="mr-1 h-3 w-3" />
         Li Ka Shing
       </Button>
       
       <Button 
         variant="outline" 
-        onClick={() => downloadSampleData(BILL_GATES_CSV, 'Bill Gates')}
+        onClick={() => loadSampleData(BILL_GATES_CSV, 'Bill Gates')}
         className="text-xs"
         size="sm"
       >
-        <Download className="mr-1 h-3 w-3" />
+        <Import className="mr-1 h-3 w-3" />
         Bill Gates
       </Button>
       
       <Button 
         variant="outline" 
-        onClick={() => downloadSampleData(ELON_MUSK_CSV, 'Elon Musk')}
+        onClick={() => loadSampleData(ELON_MUSK_CSV, 'Elon Musk')}
         className="text-xs"
         size="sm"
       >
-        <Download className="mr-1 h-3 w-3" />
+        <Import className="mr-1 h-3 w-3" />
         Elon Musk
       </Button>
     </div>
