@@ -97,4 +97,5 @@ export interface PortfolioState {
   setError: (error: string | null) => void;
   selectScenario: (scenarioId: string | null) => void;
   calculateImpact: () => void;
+  calculateImpactForScenario: (scenarioId: string) => PortfolioImpact | null;
 }

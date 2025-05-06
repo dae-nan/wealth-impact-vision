@@ -263,25 +263,7 @@ export const PortfolioDashboard = () => {
         </TabsContent>
         
         <TabsContent value="vulnerability" className="space-y-6">
-          <div className="grid grid-cols-1 gap-6">
-            {selectedScenarioId ? (
-              <VulnerabilityComparison />
-            ) : (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Vulnerability Comparison</CardTitle>
-                  <CardDescription>
-                    Select a scenario first to compare portfolio vulnerabilities
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-center py-8 text-muted-foreground">
-                    Please select a scenario from the Scenario Analysis tab to view vulnerability comparisons
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-          </div>
+          <VulnerabilityComparison />
         </TabsContent>
       </Tabs>
     </div>

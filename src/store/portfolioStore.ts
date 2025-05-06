@@ -43,5 +43,20 @@ export const usePortfolioStore = create<PortfolioState>((set, get) => ({
     
     const portfolioImpact = calculatePortfolioImpact(holdingsData, scenario);
     set({ portfolioImpact });
+  },
+  
+  calculateImpactForScenario: (scenarioId) => {
+    const { holdingsData, scenarios } = get();
+    
+    if (!holdingsData) {
+      return null;
+    }
+    
+    const scenario = scenarios.find(s => s.id === scenarioId);
+    if (!scenario) {
+      return null;
+    }
+    
+    return calculatePortfolioImpact(holdingsData, scenario);
   }
 }));
