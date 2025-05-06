@@ -1,0 +1,86 @@
+
+import { Scenario } from './types';
+
+// Predefined scenarios
+export const predefinedScenarios: Scenario[] = [
+  {
+    id: 'gfc-crisis',
+    name: 'Global Financial Crisis',
+    description: 'A severe worldwide economic crisis similar to the 2008 financial crisis. Characterized by sharp declines in most asset classes except safe havens.',
+    impacts: [
+      { assetClass: 'Stocks', percentageChange: -45 },
+      { assetClass: 'Bonds', percentageChange: 5 },
+      { assetClass: 'Real Estate', percentageChange: -30 },
+      { assetClass: 'Cash', percentageChange: 0 },
+      { assetClass: 'Private Equity', percentageChange: -35 },
+      { assetClass: 'Commodities', percentageChange: -20 },
+      { assetClass: 'Cryptocurrency', percentageChange: -60 },
+      { assetClass: 'Other', percentageChange: -25 },
+    ],
+    duration: '18-24 months with 36-month recovery timeline',
+  },
+  {
+    id: 'trump-put',
+    name: 'Trump Put',
+    description: 'Market scenario based on Trump administration policies favoring deregulation, tax cuts, and pro-business measures, particularly for domestic companies.',
+    impacts: [
+      { assetClass: 'Stocks', percentageChange: 15 },
+      { assetClass: 'Bonds', percentageChange: -5 },
+      { assetClass: 'Real Estate', percentageChange: 10 },
+      { assetClass: 'Cash', percentageChange: -2 },
+      { assetClass: 'Private Equity', percentageChange: 8 },
+      { assetClass: 'Commodities', percentageChange: 12 },
+      { assetClass: 'Cryptocurrency', percentageChange: -10 },
+      { assetClass: 'Other', percentageChange: 5 },
+    ],
+    duration: '12-18 months',
+  },
+  {
+    id: 'tech-bubble',
+    name: 'Tech Bubble Burst',
+    description: 'A scenario similar to the dot-com crash of 2000, with significant technology sector collapse and flight to traditional value assets.',
+    impacts: [
+      { assetClass: 'Stocks', percentageChange: -30 },
+      { assetClass: 'Bonds', percentageChange: 8 },
+      { assetClass: 'Real Estate', percentageChange: -5 },
+      { assetClass: 'Cash', percentageChange: 0 },
+      { assetClass: 'Private Equity', percentageChange: -25 },
+      { assetClass: 'Commodities', percentageChange: 10 },
+      { assetClass: 'Cryptocurrency', percentageChange: -70 },
+      { assetClass: 'Other', percentageChange: -10 },
+    ],
+    duration: '12-24 months with 24-month recovery timeline',
+  },
+  {
+    id: 'stagflation',
+    name: 'Stagflation Environment',
+    description: 'Persistent high inflation combined with high unemployment and stagnant demand, similar to the 1970s economic situation.',
+    impacts: [
+      { assetClass: 'Stocks', percentageChange: -15 },
+      { assetClass: 'Bonds', percentageChange: -10 },
+      { assetClass: 'Real Estate', percentageChange: 5 },
+      { assetClass: 'Cash', percentageChange: -8 },
+      { assetClass: 'Private Equity', percentageChange: -12 },
+      { assetClass: 'Commodities', percentageChange: 25 },
+      { assetClass: 'Cryptocurrency', percentageChange: -5 },
+      { assetClass: 'Other', percentageChange: 0 },
+    ],
+    duration: '24-36 months',
+  },
+  {
+    id: 'energy-shock',
+    name: 'Energy Price Shock',
+    description: 'Sudden and significant increase in energy prices due to geopolitical events, supply disruptions, or policy changes affecting energy markets.',
+    impacts: [
+      { assetClass: 'Stocks', percentageChange: -10 },
+      { assetClass: 'Bonds', percentageChange: -5 },
+      { assetClass: 'Real Estate', percentageChange: -5 },
+      { assetClass: 'Cash', percentageChange: -3 },
+      { assetClass: 'Private Equity', percentageChange: -8 },
+      { assetClass: 'Commodities', percentageChange: 40 },
+      { assetClass: 'Cryptocurrency', percentageChange: 5 },
+      { assetClass: 'Other', percentageChange: -5 },
+    ],
+    duration: '6-12 months',
+  },
+];
