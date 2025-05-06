@@ -67,7 +67,7 @@ export const PortfolioImpactDisplay = () => {
         <div>
           <h3 className="text-lg font-medium mb-3">Asset Class Breakdown</h3>
           <div className="space-y-3">
-            {Object.entries(portfolioImpact.assetClassImpacts || {}).map(([assetClass, impact]) => (
+            {Object.entries(portfolioImpact.assetClassImpacts).map(([assetClass, impact]) => (
               <div key={assetClass} className="flex justify-between border-b pb-2">
                 <div>
                   <div className="font-medium">{assetClass}</div>

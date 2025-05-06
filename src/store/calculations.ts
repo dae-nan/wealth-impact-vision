@@ -5,7 +5,7 @@ export const calculatePortfolioImpact = (
   holdingsData: HoldingsData, 
   scenario: Scenario
 ): PortfolioImpact => {
-  // Calculate impact for each asset class
+  // Initialize empty object for asset class impacts
   const assetClassImpacts: Record<string, { 
     originalValue: number; 
     impactedValue: number; 
@@ -13,37 +13,47 @@ export const calculatePortfolioImpact = (
     percentageChange: number; 
   }> = {};
   
-  // Group assets by asset class
+  // First, collect all unique asset classes from the portfolio
+  const uniqueAssetClasses = new Set<string>();
   holdingsData.assets.forEach(asset => {
-    if (!assetClassImpacts[asset.assetClass]) {
-      assetClassImpacts[asset.assetClass] = {
-        originalValue: 0,
-        impactedValue: 0,
-        absoluteChange: 0,
-        percentageChange: 0
-      };
-    }
+    uniqueAssetClasses.add(asset.assetClass);
+  });
+  
+  // Initialize the assetClassImpacts for all unique asset classes
+  uniqueAssetClasses.forEach(assetClass => {
+    assetClassImpacts[assetClass] = {
+      originalValue: 0,
+      impactedValue: 0,
+      absoluteChange: 0,
+      percentageChange: 0
+    };
+  });
+  
+  // Calculate the original value for each asset class
+  holdingsData.assets.forEach(asset => {
     assetClassImpacts[asset.assetClass].originalValue += asset.value;
   });
   
-  // Apply impact percentages to each asset class
+  // Create a map of asset class to impact percentage for faster lookups
+  const impactMap = new Map<string, number>();
   scenario.impacts.forEach(impact => {
-    if (assetClassImpacts[impact.assetClass]) {
-      const original = assetClassImpacts[impact.assetClass].originalValue;
-      const change = (original * impact.percentageChange) / 100;
-      const impacted = original + change;
-      
-      assetClassImpacts[impact.assetClass].impactedValue = impacted;
-      assetClassImpacts[impact.assetClass].absoluteChange = change;
-      assetClassImpacts[impact.assetClass].percentageChange = impact.percentageChange;
-    }
+    impactMap.set(impact.assetClass, impact.percentageChange);
+  });
+  
+  // Apply impact percentages to each asset class
+  Object.entries(assetClassImpacts).forEach(([assetClass, impact]) => {
+    const impactPercentage = impactMap.get(assetClass) ?? 0;
+    const original = impact.originalValue;
+    const change = (original * impactPercentage) / 100;
+    
+    assetClassImpacts[assetClass].impactedValue = original + change;
+    assetClassImpacts[assetClass].absoluteChange = change;
+    assetClassImpacts[assetClass].percentageChange = impactPercentage;
   });
   
   // Calculate individual asset impacts
   const assetImpacts = holdingsData.assets.map(asset => {
-    const impactPercentage = scenario.impacts.find(
-      impact => impact.assetClass === asset.assetClass
-    )?.percentageChange || 0;
+    const impactPercentage = impactMap.get(asset.assetClass) ?? 0;
     
     const absoluteChange = (asset.value * impactPercentage) / 100;
     const impactedValue = asset.value + absoluteChange;
