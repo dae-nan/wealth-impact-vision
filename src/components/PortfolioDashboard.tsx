@@ -6,9 +6,11 @@ import { PieChart } from './visualizations/PieChart';
 import { BarChart } from './visualizations/BarChart';
 import { groupAssetsByProperty } from '@/utils/csvParser';
 import { Button } from './ui/button';
+import { ScenarioSelector } from './ScenarioSelector';
+import { PortfolioImpactDisplay } from './PortfolioImpactDisplay';
 
 export const PortfolioDashboard = () => {
-  const { holdingsData, clearHoldingsData } = usePortfolioStore();
+  const { holdingsData, clearHoldingsData, selectedScenarioId } = usePortfolioStore();
   
   if (!holdingsData) return null;
   
@@ -47,6 +49,7 @@ export const PortfolioDashboard = () => {
           <TabsTrigger value="assetClass">Asset Classes</TabsTrigger>
           <TabsTrigger value="industry">Industries</TabsTrigger>
           <TabsTrigger value="geography">Geography</TabsTrigger>
+          <TabsTrigger value="scenarios">Scenario Analysis</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
@@ -144,6 +147,13 @@ export const PortfolioDashboard = () => {
               title="Geographic Distribution" 
               height={400}
             />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="scenarios" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ScenarioSelector />
+            {selectedScenarioId && <PortfolioImpactDisplay />}
           </div>
         </TabsContent>
       </Tabs>
