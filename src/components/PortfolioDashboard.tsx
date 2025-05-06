@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePortfolioStore } from '@/store/portfolioStore';
@@ -9,6 +10,7 @@ import { ScenarioSelector } from './ScenarioSelector';
 import { PortfolioImpactDisplay } from './PortfolioImpactDisplay';
 import { RiskAttributionAnalysis } from './RiskAttributionAnalysis';
 import { VulnerabilityComparison } from './VulnerabilityComparison';
+import { VulnerabilityRankings } from './vulnerability/VulnerabilityRankings';
 import { PDFReportGenerator } from './PDFReportGenerator';
 import { ArrowLeft } from 'lucide-react';
 
@@ -59,6 +61,7 @@ export const PortfolioDashboard = () => {
           <TabsTrigger value="geography" className="px-4">Geography</TabsTrigger>
           <TabsTrigger value="scenarios" className="px-4">Scenario Analysis</TabsTrigger>
           <TabsTrigger value="vulnerability" className="px-4">Vulnerability</TabsTrigger>
+          <TabsTrigger value="rankings" className="px-4">Rankings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
@@ -264,6 +267,10 @@ export const PortfolioDashboard = () => {
         
         <TabsContent value="vulnerability" className="space-y-6">
           <VulnerabilityComparison />
+        </TabsContent>
+        
+        <TabsContent value="rankings" className="space-y-6">
+          <VulnerabilityRankings />
         </TabsContent>
       </Tabs>
     </div>
