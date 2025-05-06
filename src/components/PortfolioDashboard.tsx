@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePortfolioStore } from '@/store/portfolioStore';
@@ -6,9 +5,6 @@ import { PieChart } from './visualizations/PieChart';
 import { BarChart } from './visualizations/BarChart';
 import { groupAssetsByProperty } from '@/utils/csvParser';
 import { Button } from './ui/button';
-import { ScenarioSelector } from './ScenarioSelector';
-import { PortfolioImpactDisplay } from './PortfolioImpactDisplay';
-import { RiskAttributionAnalysis } from './RiskAttributionAnalysis';
 import { VulnerabilityComparison } from './VulnerabilityComparison';
 import { VulnerabilityRankings } from './vulnerability/VulnerabilityRankings';
 import { PDFReportGenerator } from './PDFReportGenerator';
@@ -59,8 +55,7 @@ export const PortfolioDashboard = () => {
           <TabsTrigger value="assetClass" className="px-4">Asset Classes</TabsTrigger>
           <TabsTrigger value="industry" className="px-4">Industries</TabsTrigger>
           <TabsTrigger value="geography" className="px-4">Geography</TabsTrigger>
-          <TabsTrigger value="scenarios" className="px-4">Scenario Analysis</TabsTrigger>
-          <TabsTrigger value="vulnerability" className="px-4">Vulnerability</TabsTrigger>
+          <TabsTrigger value="scenarioAnalysis" className="px-4">Scenario Analysis</TabsTrigger>
           <TabsTrigger value="rankings" className="px-4">Rankings</TabsTrigger>
         </TabsList>
         
@@ -246,26 +241,7 @@ export const PortfolioDashboard = () => {
           </div>
         </TabsContent>
         
-        <TabsContent value="scenarios" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <ScenarioSelector />
-            {selectedScenarioId && <PortfolioImpactDisplay />}
-          </div>
-          
-          {selectedScenarioId && (
-            <>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-                <RiskAttributionAnalysis />
-              </div>
-              
-              <div className="flex justify-end mt-4">
-                <PDFReportGenerator />
-              </div>
-            </>
-          )}
-        </TabsContent>
-        
-        <TabsContent value="vulnerability" className="space-y-6">
+        <TabsContent value="scenarioAnalysis" className="space-y-6">
           <VulnerabilityComparison />
         </TabsContent>
         
