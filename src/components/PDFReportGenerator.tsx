@@ -5,8 +5,21 @@ import { FileText, Download } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { Asset } from '@/store/types';
 import { groupAssetsByProperty } from '@/utils/csvParser';
+
+// Define a type that extends jsPDF with properties added by autotable
+type AutoTableJsPDF = jsPDF & {
+  lastAutoTable?: {
+    finalY: number;
+  };
+  internal: {
+    getNumberOfPages: () => number;
+    pageSize: {
+      width: number;
+      height: number;
+    };
+  };
+};
 
 export const PDFReportGenerator = () => {
   const { holdingsData, portfolioImpact, scenarios, selectedScenarioId } = usePortfolioStore();
@@ -19,8 +32,8 @@ export const PDFReportGenerator = () => {
   
   const generatePDF = () => {
     try {
-      // Initialize PDF document
-      const pdf = new jsPDF();
+      // Initialize PDF document with type assertion
+      const pdf = new jsPDF() as AutoTableJsPDF;
       const pageWidth = pdf.internal.pageSize.width;
       
       // Add header
@@ -171,7 +184,10 @@ export const PDFReportGenerator = () => {
       // Asset allocation chart data (simplified display in PDF)
       pdf.setFontSize(16);
       pdf.setTextColor(33, 33, 33);
-      pdf.text('Portfolio Composition', 14, pdf.lastAutoTable.finalY + 20);
+      
+      // Use a fixed Y position instead of lastAutoTable
+      const nextSectionY = 170;
+      pdf.text('Portfolio Composition', 14, nextSectionY);
       
       const assetClassData2 = groupAssetsByProperty(holdingsData.assets, 'assetClass');
       const allocationHeaders = [['Asset Class', 'Allocation', 'Percentage']];
@@ -184,7 +200,7 @@ export const PDFReportGenerator = () => {
       autoTable(pdf, {
         head: allocationHeaders,
         body: allocationData,
-        startY: pdf.lastAutoTable.finalY + 25,
+        startY: nextSectionY + 5,
         styles: { fontSize: 10 },
         headStyles: { fillColor: [37, 99, 235], textColor: 255 }
       });
