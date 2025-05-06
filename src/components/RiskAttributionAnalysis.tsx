@@ -20,7 +20,7 @@ export const RiskAttributionAnalysis = () => {
     
   if (topRiskyAssets.length === 0) {
     return (
-      <Card>
+      <Card className="shadow-sm hover:shadow-md transition-all">
         <CardHeader>
           <CardTitle>Risk Attribution Analysis</CardTitle>
           <CardDescription>
@@ -43,7 +43,7 @@ export const RiskAttributionAnalysis = () => {
   }, {} as Record<string, number>);
   
   return (
-    <Card>
+    <Card className="shadow-sm hover:shadow-md transition-all">
       <CardHeader>
         <CardTitle>Risk Attribution Analysis</CardTitle>
         <CardDescription>
@@ -52,11 +52,38 @@ export const RiskAttributionAnalysis = () => {
       </CardHeader>
       <CardContent>
         {topRiskyAssets.length > 0 ? (
-          <BarChart 
-            data={riskData} 
-            title="Assets by Risk Impact" 
-            height={400}
-          />
+          <>
+            <BarChart 
+              data={riskData} 
+              title="Assets by Risk Impact" 
+              height={400}
+            />
+            <div className="mt-4 max-h-64 overflow-y-auto border rounded-md">
+              <table className="w-full">
+                <thead className="bg-muted/60 sticky top-0">
+                  <tr>
+                    <th className="text-left p-2">Asset Name</th>
+                    <th className="text-right p-2">Original Value</th>
+                    <th className="text-right p-2">Impact</th>
+                    <th className="text-right p-2">Change</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {topRiskyAssets.map((asset) => (
+                    <tr key={asset.id} className="border-t hover:bg-muted/40">
+                      <td className="p-2">
+                        <div className="font-medium">{asset.name}</div>
+                        <div className="text-xs text-muted-foreground">{asset.assetClass} / {asset.industry}</div>
+                      </td>
+                      <td className="text-right p-2">${asset.originalValue.toLocaleString()}</td>
+                      <td className="text-right p-2 text-red-500">-${Math.abs(asset.absoluteChange).toLocaleString()}</td>
+                      <td className="text-right p-2 text-red-500">{asset.percentageChange.toFixed(2)}%</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         ) : (
           <p className="text-center text-muted-foreground py-8">
             No negative impacts found in this scenario.

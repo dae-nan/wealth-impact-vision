@@ -10,6 +10,8 @@ import { ScenarioSelector } from './ScenarioSelector';
 import { PortfolioImpactDisplay } from './PortfolioImpactDisplay';
 import { RiskAttributionAnalysis } from './RiskAttributionAnalysis';
 import { VulnerabilityComparison } from './VulnerabilityComparison';
+import { PDFReportGenerator } from './PDFReportGenerator';
+import { ArrowLeft } from 'lucide-react';
 
 export const PortfolioDashboard = () => {
   const { holdingsData, clearHoldingsData, selectedScenarioId } = usePortfolioStore();
@@ -32,7 +34,8 @@ export const PortfolioDashboard = () => {
   
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Dashboard Header with Actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-secondary/10 p-4 rounded-lg">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">{holdingsData.individualName}'s Portfolio</h2>
           <p className="text-muted-foreground">
@@ -40,23 +43,27 @@ export const PortfolioDashboard = () => {
             Last Updated: {holdingsData.lastUpdated.toLocaleDateString()}
           </p>
         </div>
-        <Button variant="outline" onClick={clearHoldingsData}>
-          Clear Data
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          {selectedScenarioId && <PDFReportGenerator />}
+          <Button variant="outline" className="flex items-center gap-2" onClick={clearHoldingsData}>
+            <ArrowLeft className="h-4 w-4" />
+            Clear Data
+          </Button>
+        </div>
       </div>
       
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="assetClass">Asset Classes</TabsTrigger>
-          <TabsTrigger value="industry">Industries</TabsTrigger>
-          <TabsTrigger value="geography">Geography</TabsTrigger>
-          <TabsTrigger value="scenarios">Scenario Analysis</TabsTrigger>
+        <TabsList className="w-full sm:w-auto flex overflow-x-auto justify-start sm:justify-center p-1 mb-4">
+          <TabsTrigger value="overview" className="px-4">Overview</TabsTrigger>
+          <TabsTrigger value="assetClass" className="px-4">Asset Classes</TabsTrigger>
+          <TabsTrigger value="industry" className="px-4">Industries</TabsTrigger>
+          <TabsTrigger value="geography" className="px-4">Geography</TabsTrigger>
+          <TabsTrigger value="scenarios" className="px-4">Scenario Analysis</TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card>
+            <Card className="shadow-sm hover:shadow transition-shadow duration-200">
               <CardHeader>
                 <CardTitle>Portfolio Summary</CardTitle>
                 <CardDescription>
@@ -108,7 +115,7 @@ export const PortfolioDashboard = () => {
         </TabsContent>
         
         <TabsContent value="assetClass">
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <BarChart 
               data={assetClassData} 
               title="Asset Class Allocation" 
@@ -119,11 +126,39 @@ export const PortfolioDashboard = () => {
               title="Asset Class Allocation" 
               height={400} 
             />
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Asset Class Breakdown</CardTitle>
+                <CardDescription>Detailed view of asset classes in your portfolio</CardDescription>
+              </CardHeader>
+              <CardContent className="overflow-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-2">Asset Class</th>
+                      <th className="text-right py-2">Value</th>
+                      <th className="text-right py-2">Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(assetClassData).map(([assetClass, value]) => (
+                      <tr key={assetClass} className="border-b">
+                        <td className="py-2">{assetClass}</td>
+                        <td className="text-right py-2">${value.toLocaleString()}</td>
+                        <td className="text-right py-2">
+                          {((value / holdingsData.totalValue) * 100).toFixed(2)}%
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
         
         <TabsContent value="industry">
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <BarChart 
               data={industryData} 
               title="Industry Exposure" 
@@ -134,11 +169,39 @@ export const PortfolioDashboard = () => {
               title="Industry Exposure" 
               height={400}
             />
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Industry Breakdown</CardTitle>
+                <CardDescription>Detailed view of industry sectors in your portfolio</CardDescription>
+              </CardHeader>
+              <CardContent className="overflow-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-2">Industry</th>
+                      <th className="text-right py-2">Value</th>
+                      <th className="text-right py-2">Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(industryData).map(([industry, value]) => (
+                      <tr key={industry} className="border-b">
+                        <td className="py-2">{industry}</td>
+                        <td className="text-right py-2">${value.toLocaleString()}</td>
+                        <td className="text-right py-2">
+                          {((value / holdingsData.totalValue) * 100).toFixed(2)}%
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
         
         <TabsContent value="geography">
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             <BarChart 
               data={regionData} 
               title="Geographic Distribution" 
@@ -149,6 +212,34 @@ export const PortfolioDashboard = () => {
               title="Geographic Distribution" 
               height={400}
             />
+            <Card className="md:col-span-2">
+              <CardHeader>
+                <CardTitle>Regional Breakdown</CardTitle>
+                <CardDescription>Detailed view of geographic regions in your portfolio</CardDescription>
+              </CardHeader>
+              <CardContent className="overflow-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-2">Region</th>
+                      <th className="text-right py-2">Value</th>
+                      <th className="text-right py-2">Percentage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(regionData).map(([region, value]) => (
+                      <tr key={region} className="border-b">
+                        <td className="py-2">{region}</td>
+                        <td className="text-right py-2">${value.toLocaleString()}</td>
+                        <td className="text-right py-2">
+                          {((value / holdingsData.totalValue) * 100).toFixed(2)}%
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
         
@@ -159,10 +250,16 @@ export const PortfolioDashboard = () => {
           </div>
           
           {selectedScenarioId && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-              <RiskAttributionAnalysis />
-              <VulnerabilityComparison />
-            </div>
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                <RiskAttributionAnalysis />
+                <VulnerabilityComparison />
+              </div>
+              
+              <div className="flex justify-end mt-4">
+                <PDFReportGenerator />
+              </div>
+            </>
           )}
         </TabsContent>
       </Tabs>

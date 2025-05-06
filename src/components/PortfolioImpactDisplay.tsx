@@ -23,7 +23,7 @@ export const PortfolioImpactDisplay = () => {
   const isPositive = portfolioImpact.percentageChange >= 0;
   
   return (
-    <Card>
+    <Card className="shadow-sm hover:shadow-md transition-all">
       <CardHeader>
         <CardTitle>Portfolio Impact Analysis</CardTitle>
         <CardDescription>
@@ -32,17 +32,20 @@ export const PortfolioImpactDisplay = () => {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-muted p-4 rounded-lg">
+          <div className="bg-muted/60 p-4 rounded-lg">
             <div className="text-sm text-muted-foreground">Original Value</div>
             <div className="text-2xl font-bold">{formatCurrency(portfolioImpact.originalValue)}</div>
           </div>
-          <div className="bg-muted p-4 rounded-lg">
+          <div className="bg-muted/60 p-4 rounded-lg">
             <div className="text-sm text-muted-foreground">Projected Value</div>
             <div className="text-2xl font-bold">{formatCurrency(portfolioImpact.impactedValue)}</div>
           </div>
         </div>
         
-        <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
+        <div className="flex items-center justify-between p-6 bg-muted/60 rounded-lg border-l-4 border-r-4 border-solid border-transparent" style={{
+          borderLeftColor: isPositive ? 'rgb(22, 163, 74)' : 'rgb(220, 38, 38)',
+          borderRightColor: isPositive ? 'rgb(22, 163, 74)' : 'rgb(220, 38, 38)'
+        }}>
           <div>
             <div className="text-sm text-muted-foreground">Net Impact</div>
             <div className="text-2xl font-bold">
@@ -63,7 +66,7 @@ export const PortfolioImpactDisplay = () => {
         
         <div>
           <h3 className="text-lg font-medium mb-3">Asset Class Breakdown</h3>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {Object.entries(portfolioImpact.assetClassImpacts).map(([assetClass, impact]) => (
               <div key={assetClass} className="flex justify-between border-b pb-2">
                 <div>
@@ -72,8 +75,8 @@ export const PortfolioImpactDisplay = () => {
                     {formatCurrency(impact.originalValue)} → {formatCurrency(impact.impactedValue)}
                   </div>
                 </div>
-                <div className={impact.percentageChange >= 0 ? 'text-green-500' : 'text-red-500'}>
-                  {impact.percentageChange >= 0 ? '+' : ''}{impact.percentageChange}%
+                <div className={`font-semibold ${impact.percentageChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {impact.percentageChange >= 0 ? '+' : ''}{impact.percentageChange.toFixed(2)}%
                 </div>
               </div>
             ))}

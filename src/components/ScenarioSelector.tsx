@@ -21,7 +21,7 @@ export const ScenarioSelector = () => {
   };
   
   return (
-    <Card>
+    <Card className="shadow-sm hover:shadow-md transition-all">
       <CardHeader>
         <CardTitle>Scenario Selection</CardTitle>
         <CardDescription>
@@ -46,22 +46,22 @@ export const ScenarioSelector = () => {
         </Select>
         
         {selectedScenario && (
-          <div className="space-y-3 mt-4">
+          <div className="space-y-4 mt-4 bg-muted/30 p-4 rounded-lg border border-muted">
             <div>
-              <h4 className="font-medium">Description</h4>
-              <p className="text-sm text-muted-foreground">{selectedScenario.description}</p>
+              <h4 className="font-medium text-sm uppercase tracking-wider text-muted-foreground">Description</h4>
+              <p className="text-sm mt-1">{selectedScenario.description}</p>
             </div>
             <div>
-              <h4 className="font-medium">Duration</h4>
-              <p className="text-sm text-muted-foreground">{selectedScenario.duration}</p>
+              <h4 className="font-medium text-sm uppercase tracking-wider text-muted-foreground">Duration</h4>
+              <p className="text-sm mt-1">{selectedScenario.duration}</p>
             </div>
             <div>
-              <h4 className="font-medium">Asset Class Impacts</h4>
-              <div className="grid grid-cols-2 gap-2 mt-2">
+              <h4 className="font-medium text-sm uppercase tracking-wider text-muted-foreground">Asset Class Impacts</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                 {selectedScenario.impacts.map(impact => (
                   <div 
                     key={impact.assetClass} 
-                    className="flex justify-between border p-2 rounded-md"
+                    className="flex justify-between border p-2 rounded-md bg-background"
                   >
                     <span className="text-sm">{impact.assetClass}</span>
                     <span 
