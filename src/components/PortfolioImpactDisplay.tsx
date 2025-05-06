@@ -2,6 +2,7 @@
 import { usePortfolioStore } from '@/store/portfolioStore';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrendingDown, TrendingUp } from 'lucide-react';
+import { formatCurrencyCompact } from '@/utils/formatters';
 
 export const PortfolioImpactDisplay = () => {
   const { portfolioImpact, selectedScenarioId, scenarios } = usePortfolioStore();
@@ -11,14 +12,6 @@ export const PortfolioImpactDisplay = () => {
   if (!portfolioImpact || !selectedScenario) {
     return null;
   }
-  
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
   
   const isPositive = portfolioImpact.percentageChange >= 0;
   
@@ -34,11 +27,11 @@ export const PortfolioImpactDisplay = () => {
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-muted/60 p-4 rounded-lg">
             <div className="text-sm text-muted-foreground">Original Value</div>
-            <div className="text-2xl font-bold">{formatCurrency(portfolioImpact.originalValue)}</div>
+            <div className="text-2xl font-bold">{formatCurrencyCompact(portfolioImpact.originalValue)}</div>
           </div>
           <div className="bg-muted/60 p-4 rounded-lg">
             <div className="text-sm text-muted-foreground">Projected Value</div>
-            <div className="text-2xl font-bold">{formatCurrency(portfolioImpact.impactedValue)}</div>
+            <div className="text-2xl font-bold">{formatCurrencyCompact(portfolioImpact.impactedValue)}</div>
           </div>
         </div>
         
@@ -49,7 +42,7 @@ export const PortfolioImpactDisplay = () => {
           <div>
             <div className="text-sm text-muted-foreground">Net Impact</div>
             <div className="text-2xl font-bold">
-              {formatCurrency(Math.abs(portfolioImpact.absoluteChange))}
+              {formatCurrencyCompact(Math.abs(portfolioImpact.absoluteChange))}
               <span className={isPositive ? 'text-green-500' : 'text-red-500'}>
                 {' '}({isPositive ? '+' : ''}{portfolioImpact.percentageChange.toFixed(2)}%)
               </span>
@@ -72,7 +65,7 @@ export const PortfolioImpactDisplay = () => {
                 <div>
                   <div className="font-medium">{assetClass}</div>
                   <div className="text-sm text-muted-foreground">
-                    {formatCurrency(impact.originalValue)} → {formatCurrency(impact.impactedValue)}
+                    {formatCurrencyCompact(impact.originalValue)} → {formatCurrencyCompact(impact.impactedValue)}
                   </div>
                 </div>
                 <div className={`font-semibold ${impact.percentageChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
