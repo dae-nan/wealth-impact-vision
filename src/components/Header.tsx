@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 export const Header = () => {
-  const [activeTab, setActiveTab] = useState("analysis");
+  const [activeTab, setActiveTab] = useState("portfolio");
   
   return (
     <header className="sticky top-0 z-50">
@@ -30,7 +30,7 @@ export const Header = () => {
       {/* Main navigation */}
       <div className="px-6 h-16 flex items-center border-b bg-sc-blue text-white shadow-md">
         <div className="flex items-center gap-3 font-semibold text-lg">
-          <span className="bg-white text-sc-blue p-1.5 rounded text-sm font-bold">SC</span>
+          <span className="bg-yellow-400 text-black p-1.5 rounded text-sm font-bold">DD</span>
           <span className="font-light tracking-wide">WealthImpact Analyzer</span>
         </div>
         <nav className="ml-auto flex gap-1 sm:gap-4">
@@ -45,24 +45,24 @@ export const Header = () => {
           <Button 
             variant="ghost" 
             size="sm" 
-            className={`text-white hover:bg-sc-blue-600 border-b-2 ${activeTab === "scenarios" ? "border-white" : "border-transparent"}`}
-            onClick={() => setActiveTab("scenarios")}
+            className="text-gray-300 hover:bg-sc-blue-600 border-b-2 border-transparent opacity-60 cursor-not-allowed"
+            disabled
           >
             Scenarios
           </Button>
           <Button 
             variant="ghost" 
             size="sm" 
-            className={`text-white hover:bg-sc-blue-600 border-b-2 ${activeTab === "analysis" ? "border-white" : "border-transparent"}`}
-            onClick={() => setActiveTab("analysis")}
+            className="text-gray-300 hover:bg-sc-blue-600 border-b-2 border-transparent opacity-60 cursor-not-allowed"
+            disabled
           >
             Analysis
           </Button>
           <Button 
             variant="ghost" 
             size="sm" 
-            className={`text-white hover:bg-sc-blue-600 border-b-2 ${activeTab === "reports" ? "border-white" : "border-transparent"}`}
-            onClick={() => setActiveTab("reports")}
+            className="text-gray-300 hover:bg-sc-blue-600 border-b-2 border-transparent opacity-60 cursor-not-allowed"
+            disabled
           >
             Reports
           </Button>
